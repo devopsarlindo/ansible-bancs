@@ -1,0 +1,7 @@
+---
+- hosts: bancs_batch_servers
+  gather_facts: yes
+  become: yes
+  tasks:
+    - include_role:
+        name: bancsmibatchapp

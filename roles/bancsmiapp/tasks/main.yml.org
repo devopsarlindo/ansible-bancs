@@ -1,0 +1,169 @@
+---
+- name: check java version
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+  register: java_version
+
+- assert:
+    that:
+      - java_version.stdout is version_compare('1.7', '>=')
+
+- name: check ant version
+  shell: ant -version 2>&1 | grep version | awk '{print $4}'
+  register: ant_version
+
+- assert:
+    that:
+      - ant_version.stdout is version_compare('1.9.0', '>=')
+
+- name: check perl version
+  shell: perl -version 2>&1 | grep version | awk '{print $9}' | sed 's/[()v]//g'
+  register: perl_version
+
+- assert:
+    that:
+      - perl_version.stdout is version_compare('5.0.0', '>=')
+
+- name: make sure installer and app directory is created first
+  file:
+    path: "{{ item }}"
+    recurse: yes
+    state: directory
+    owner: wasadm
+    group: wasgrp
+  with_items:
+    - "{{ ansible_mi_app_home_dir }}"
+    - "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER"
+    - "{{ ansible_mi_app_home_dir }}/JDBC_DRIVERS"
+
+- name: copy app binaries over to server
+  copy: 
+    src: "{{ item }}"
+    dest: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER"
+    owner: wasadm
+    group: wasgrp
+  with_fileglob:
+    - files/PACKAGE/*
+
+- name: copy jdbc drivers over to server
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_mi_app_home_dir }}/JDBC_DRIVERS"
+    owner: wasadm
+    group: wasgrp
+  with_fileglob:
+    - files/JDBC_DRIVERS/*
+
+- name: update and copy over mi properties template
+  template:
+    src: MI_Deploy.properties.j2 
+    dest: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/MI_Deploy.properties"
+    owner: wasadm
+    group: wasgrp
+
+- block:
+    - name: restore websphere config back to factory default config
+      shell: "./restoreConfig.sh WebSphereConfigFactory.zip -nostop"
+      args:
+        chdir: "{{ ansible_mi_app_washome_dir }}/bin"
+      become_user: wasadm
+
+    - name: remove install target directory
+      file: 
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ ansible_mi_app_home_dir }}/AppContext.url"
+        - "{{ ansible_mi_app_home_dir }}/Deployment"
+        - "{{ ansible_mi_app_home_dir }}/BaNCSMI_JMSMODULE"
+        - "{{ ansible_mi_app_home_dir }}/Property-Migration-Tool"
+        - "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target"
+        - "/tmp/iz-TCS BaNCSMI.tmp"
+  when: (forcecleanreinstall)
+
+# make sure pexpect module is installed
+- name: run bancs IZpack installer to explode contents
+  expect:
+    chdir: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER"
+    echo: yes
+    creates: "{{ ansible_mi_app_home_dir }}/Deployment"
+    command: java -jar MI.jar -console
+    responses:
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Press 1 to accept, 2 to reject, 3 to redisplay': 1
+      'Select the installation path: ': "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target"
+      'Enter O for OK, C to Cancel:': O
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Input selection:': 1
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Location of the Config File': "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/MI_Deploy.properties"
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Enter Y for Yes, N for No:': N
+  become_user: wasadm
+
+- name: make sure installer logs dir is created first
+  file:
+    path: "{{ item }}"
+    recurse: yes
+    state: directory
+    owner: wasadm
+    group: wasgrp
+  with_items:
+    - "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/logs"
+
+- name: find sh scripts
+  find:
+    paths: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts"
+    patterns: "*.sh"
+    recurse: yes
+  register: keys
+
+- name: set execute permissions
+  file: 
+    path: "{{item.path}}" 
+    owner: wasadm 
+    group: wasgrp 
+    mode: 0755
+  with_items: "{{keys.files}}"
+
+- name: run perl installer
+  shell: perl MI_BMT_startInstallation.pl "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target" "FB" "$isRemoteAllowed" "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/MI_Deploy.properties"
+  args:
+    creates: "{{ ansible_mi_app_home_dir }}/Deployment"
+    chdir: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts"
+  environment:
+    ERRFILE: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/logs/errorlog.log"
+    INFOFILE: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/logs/infolog.log" 
+    JAVA_HOME: "/usr/lib/jvm/java"
+    ANT_HOME: "/usr/share/ant"
+  become_user: wasadm
+
+- name: copy was scripts
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/WAS_Scripts"
+    owner: wasadm
+    group: wasgrp
+  with_fileglob:
+    - files/WASSCRIPTS/*
+
+- name: map modules to web servers websphere
+  shell: ./wsadmin.sh -user {{ ansible_mi_app_dm_wasuser }} -password {{ ansible_mi_app_dm_waspassword }} -lang jython -f "{{ ansible_mi_app_home_dir }}/TMP_INSTALLER/Target/Scripts/WAS_Scripts/mapmodules.py"
+  args:
+    chdir: "{{ ansible_mi_app_washome_dir }}/bin"
+  no_log: true
+  become_user: wasadm
+
+- name: generate plugin websphere
+  shell: ./wsadmin.sh -user {{ ansible_mi_app_dm_wasuser }} -password {{ ansible_mi_app_dm_waspassword }} -lang jython -f httpPluginManagement.py generatePlugin {{ ansible_mi_app_washome_dir }}/profiles/{{ ansible_mi_app_was_dm_profname }} DEV_node1_DmgrCell node5-node DEV_webserver01 
+  args:
+    chdir: "{{ ansible_mi_app_washome_dir }}/bin"
+  no_log: true
+  become_user: wasadm
+
+- name: propagate plugin websphere
+  shell: ./wsadmin.sh -user {{ ansible_mi_app_dm_wasuser }} -password {{ ansible_mi_app_dm_waspassword }} -lang jython -f httpPluginManagement.py propagatePlugin {{ ansible_mi_app_washome_dir }}/profiles/{{ ansible_mi_app_was_dm_profname }} DEV_node1_DmgrCell node5-node DEV_webserver01
+  args:
+    chdir: "{{ ansible_mi_app_washome_dir }}/bin"
+  no_log: true
+  become_user: wasadm

@@ -1,0 +1,25 @@
+---
+forcecleanreinstall: true
+ansible_mi_app_home_dir: "/app/bancsmiapp/miapp"
+ansible_mi_app_user: "wasadm"
+ansible_mi_app_washome_dir: "/opt/IBM/WebSphere/AppServer"
+ansible_mi_app_profile_type: "ND"
+ansible_mi_app_wasprof_port: 9060
+ansible_mi_app_jvm_minheap: 1024
+ansible_mi_app_jvm_maxheap: 1024
+ansible_mi_app_was_dm_profname: "DEV_Dmgr"
+ansible_mi_app_dm_wasprof_port: 9060
+ansible_mi_app_dm_wasuser: "wasadm"
+ansible_mi_app_was_appservername: "server1"
+ansible_mi_app_was_server_profname: "DEV_AppSrv01"
+ansible_mi_app_was_corbaloc_port: 9809
+ansible_mi_app_oper_dbhost: 192.168.33.75
+ansible_mi_app_oper_dbport: 50000
+ansible_mi_app_oper_dbsid: "bancs"
+ansible_mi_app_oper_dbschema: "bancsoper"
+ansible_mi_app_oper_dbuser: "db2inst1"
+ansible_mi_app_rep_dbhost: 192.168.33.75
+ansible_mi_app_rep_dbport: 50000
+ansible_mi_app_rep_dbsid: "bancs"
+ansible_mi_app_rep_dbschema: "bancsrep"
+ansible_mi_app_rep_dbuser: "db2inst1"

@@ -1,0 +1,27 @@
+---
+forcecleanreinstall: true
+ansible_mi_commsapp_home_dir: "/app/bancsmiapp/micommsapp"
+ansible_mi_commsapp_user: "bancsmiapp"
+ansible_mi_commsapp_group: "bancsmiappgrp"
+ansible_mi_commsapp_was_corbaloc_port: 9809
+ansible_mi_commsapp_oper_dbhost: 192.168.33.75
+ansible_mi_commsapp_oper_dbport: 50000
+ansible_mi_commsapp_oper_dbsid: "bancs"
+ansible_mi_commsapp_oper_dbschema: "bancsoper"
+ansible_mi_commsapp_oper_dbuser: "db2inst1"
+ansible_mi_commsapp_rep_dbhost: 192.168.33.75
+ansible_mi_commsapp_rep_dbport: 50000
+ansible_mi_commsapp_rep_dbsid: "bancs"
+ansible_mi_commsapp_rep_dbschema: "bancsrep"
+ansible_mi_commsapp_rep_dbuser: "db2inst1"
+
+#----------------------------------------------------------
+# MQ INFO
+#----------------------------------------------------------
+ansible_mi_commsapp_mq_user: test
+ansible_mi_commsapp_mq_qmgr_host: test
+ansible_mi_commsapp_mq_qmgr_name: test
+ansible_mi_commsapp_mq_qmgr_port: 1414
+ansible_mi_commsapp_mq_qmgr_channel: SVR.CONN
+ansible_mi_commsapp_mq_in_queue_name: IN
+ansible_mi_commsapp_mq_out_queue_name: OUT

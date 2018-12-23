@@ -1,0 +1,7 @@
+*.csv
+*vault*
+*.pem
+/was/*
+*.retry
+/.vagrant/*
+/.git/*

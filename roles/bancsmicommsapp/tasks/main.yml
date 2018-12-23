@@ -1,0 +1,146 @@
+---
+- name: check java version
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+  register: java_version
+
+- assert:
+    that:
+      - java_version.stdout is version_compare('1.7', '>=')
+
+- name: check ant version
+  shell: ant -version 2>&1 | grep version | awk '{print $4}'
+  register: ant_version
+
+- assert:
+    that:
+      - ant_version.stdout is version_compare('1.9.0', '>=')
+
+- name: check perl version
+  shell: perl -version 2>&1 | grep version | awk '{print $9}' | sed 's/[()v]//g'
+  register: perl_version
+
+- assert:
+    that:
+      - perl_version.stdout is version_compare('5.0.0', '>=')
+
+- block:
+    - name: remove install target directory
+      file: 
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ ansible_mi_commsapp_home_dir }}"
+        - "/tmp/iz-TCS BaNCSMI.tmp"
+  when: (forcecleanreinstall)
+
+- name: make sure installer and app directory is created first
+  file:
+    path: "{{ item }}"
+    recurse: yes
+    state: directory
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+  with_items:
+    - "{{ ansible_mi_commsapp_home_dir }}"
+    - "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER"
+    - "{{ ansible_mi_commsapp_home_dir }}/JDBC_DRIVERS"
+
+- name: copy app binaries over to server
+  copy: 
+    src: "{{ item }}"
+    dest: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER"
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+  with_fileglob:
+    - files/PACKAGE/*
+
+- name: copy jdbc drivers over to server
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_mi_commsapp_home_dir }}/JDBC_DRIVERS"
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+
+  with_fileglob:
+    - files/JDBC_DRIVERS/*
+
+- name: update and copy over mi properties template
+  template:
+    src: MI_Deploy.properties.j2 
+    dest: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/MI_Deploy.properties"
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+
+# make sure pexpect module is installed
+- name: run bancs IZpack installer to explode contents
+  expect:
+    chdir: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER"
+    echo: yes
+    creates: "{{ ansible_mi_commsapp_home_dir }}/bin"
+    command: java -jar MI.jar -console
+    responses:
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Press 1 to accept, 2 to reject, 3 to redisplay': 1
+      'Select the installation path: ': "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target"
+      'Enter O for OK, C to Cancel:': O
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Input selection:': 1
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Location of the Config File': "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/MI_Deploy.properties"
+      'Press 1 to continue, 2 to quit, 3 to redisplay': 1
+      'Enter Y for Yes, N for No:': N
+  become_user: "{{ ansible_mi_commsapp_user }}"
+
+- name: make sure installer logs dir is created first
+  file:
+    path: "{{ item }}"
+    recurse: yes
+    state: directory
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+  with_items:
+    - "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts/logs"
+
+- name: find sh scripts
+  find:
+    paths: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts"
+    patterns: "*.sh"
+    recurse: yes
+  register: keys
+
+- name: set execute permissions
+  file: 
+    path: "{{item.path}}" 
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+    mode: 0755
+  with_items: "{{keys.files}}"
+
+- name: run perl installer
+  shell: perl MI_BMT_startInstallation.pl "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target" "FB" "$isRemoteAllowed" "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts/MI_Deploy.properties"
+  args:
+    creates: "{{ ansible_mi_commsapp_home_dir }}/bin"
+    chdir: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts"
+  environment:
+    ERRFILE: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts/logs/errorlog.log"
+    INFOFILE: "{{ ansible_mi_commsapp_home_dir }}/TMP_INSTALLER/Target/Scripts/logs/infolog.log" 
+    JAVA_HOME: "/usr/lib/jvm/java"
+    ANT_HOME: "/usr/share/ant"
+  become_user: "{{ ansible_mi_commsapp_user }}"
+
+- name: update and copy over mi comms mq properties template
+  template:
+    src: MI_Comms_Deploy.properties.j2 
+    dest: "{{ ansible_mi_commsapp_home_dir }}/InterfaceSetup/MI_Comms_Deploy.properties"
+    owner: "{{ ansible_mi_commsapp_user }}"
+    group: "{{ ansible_mi_commsapp_group }}"
+
+- name: run mq interface setup script
+  shell: ./updateInterfaceConfig.sh
+  args:
+    chdir: "{{ ansible_mi_commsapp_home_dir }}/InterfaceSetup"
+  environment:
+    JAVA_HOME: "/usr/lib/jvm/java"
+    ANT_HOME: "/usr/share/ant"
+  become_user: "{{ ansible_mi_commsapp_user }}"

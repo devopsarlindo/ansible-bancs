@@ -1,0 +1,134 @@
+#Thu, 27 Sep 2018 10:59:35 +0000
+### Flag To Install MI Online Application In This Server
+INSTALL_MIAPP=yes
+### Flag To Install MI Batches In This Server
+INSTALL_MIBATCHES=no
+### Flag To Install MI Comms In This Server
+INSTALL_MICOMMS=no
+### Flag To Install MI Reports In This Server
+INSTALL_MIREPORTS=no
+### Application server Type (WLS:WeblogicServer,WAS:Websphere)
+### Application server profile domain creation status assign no if domain is created manually
+MI_APPSVR_DOMSTATUS=CREATED
+### Flag Location of Folder Hosting EAR and Deployment Folder
+MI_APP_HOME={{ ansible_mi_app_home_dir }}
+### Flag ContextRoot For MI Online Application
+MI_APP_CNTXT_ROOT=Bancs
+### Flag HostName of the Server Hosting Application EAR Or Admin Server
+MI_APP_HOST={{ ansible_hostname }}
+### Flag UserName for running online application process
+MI_APP_USER={{ ansible_mi_app_user }}
+### Flag Application server Type (STD:Standalone,ND:Managed/Network
+MI_PROF_TYPE={{ ansible_mi_app_profile_type }}
+### Flag Application server SubType for ND(CLS:Cluster,SGL:Single)
+MI_PROF_SUBTYPE=SGL
+### Location Of WebSphere Installation
+MI_WASHOME={{ ansible_mi_app_washome_dir }}
+### Starting Port Of WebSphere Profile
+MI_WASPROFPORT={{ ansible_mi_app_wasprof_port }}
+### Location Of DBDrivers
+MI_WASDBDRVRLOC={{ ansible_mi_app_home_dir }}/JDBC_DRIVERS
+### Min Heap Size For WebSphere CLUSTER Profile JVM
+MI_WASMINHEAP_CLUSTER={{ ansible_mi_app_jvm_minheap }}
+### Max Heap Size For WebSphere CLUSTER Profile JVM
+MI_WASMAXHEAP_CLUSTER={{ ansible_mi_app_jvm_maxheap }}
+### Location Of WebSphere DEPLOYMENT MANAGER Installation
+MI_WASDMHOME=$wasDMHome
+### WebSphere DEPLOYMENT MANAGER Profile Name
+MI_WASDMPROFNAME={{ ansible_mi_app_was_dm_profname }}
+### Location Of WebSphere DEPLOYMENT MANAGER Profile
+MI_WASDMPROFHOME={{ ansible_mi_app_washome_dir }}/profiles/{{ ansible_mi_app_was_dm_profname }}
+### Listener Hostname For WebSphere DEPLOYMENT MANAGER Profile
+MI_WASDMPROFHOST={{ groups['bancs_was_deployment_manager'][0] }}
+### Starting Port Of WebSphere DEPLOYMENT MANAGER Profile
+MI_WASDMPROFPORT={{ ansible_mi_app_dm_wasprof_port }}
+### Process User Of WebSphere DEPLOYMENT MANAGER Profile
+MI_WASDMUSER={{ ansible_mi_app_dm_wasuser }}
+### Password Of WebSphere DEPLOYMENT MANAGER Profile
+MI_WASDMPASSWORD={{ ansible_mi_app_dm_waspassword }}
+### WebSphere Application Server1 Profile Name
+MI_WASAPPSERVER1NAME={{ ansible_mi_app_was_appservername }}
+### Location Of WebSphere Application Server1 Profile
+MI_WASAPPSERVER1PROFHOME={{ ansible_mi_app_washome_dir }}/profiles/{{ ansible_mi_app_was_server_profname }}
+### Listener Hostname For WebSphere Application Server1 Profile
+MI_WASAPPSERVER1PROFHOST={{ ansible_hostname }}
+### CLUSTER NAME
+MI_WASCLUSTERNAME=$wasClusterName
+### WebSphere Application Server2 Profile Name
+MI_WASAPPSERVER2NAME=$wasAppSrv2Name
+### Location Of WebSphere Application Server2 Profile
+MI_WASAPPSERVER2PROFHOME=$wasAppSrv2ProfHome
+### Listener Hostname For WebSphere Application Server2 Profile
+MI_WASAPPSERVER2PROFHOST=$wasAppSrvHost2
+
+### Application context URL for MI Online application
+#### should be bootstrap port
+MI_APP_CNTXT_URL=corbaloc\:iiop\:={{ ansible_hostname }}\:{{ ansible_mi_app_was_corbaloc_port }}
+
+### Application server Type (WLS:WeblogicServer,WAS:Websphere)
+MI_APPSERVER=WAS
+
+### Flag Application database Type (STD:Standalone,ND:Clustered)
+MI_DB2_TYPE=STD
+### Application Database Type
+MI_DBTYPE=DB2
+### Operational Database Node1 Host IP
+MI_OPRDB_NODE1_HOST={{ ansible_mi_app_oper_dbhost }}
+### Operational Database Node1 Host port
+MI_OPRDB_NODE1_PORT={{ ansible_mi_app_oper_dbport }}
+### Operational Database Node1 DBName
+MI_OPRDB_NODE1_SID={{ ansible_mi_app_oper_dbsid }}
+### Operational Database Node1 SchemaName
+MI_OPRDB_NODE1_SCHEMA={{ ansible_mi_app_oper_dbschema }}
+### Operational Database Node1 Schema userName
+MI_OPRDB_NODE1_USER={{ ansible_mi_app_oper_dbuser }}
+### Operational Database Node1 Schema password
+MI_OPRDB_NODE1_PWD={{ ansible_mi_app_oper_dbpassword }}
+### Operational Database Node2 Host IP
+MI_OPRDB_NODE2_HOST=$DBNode2IP
+### Operational Database Node2 Host port
+MI_OPRDB_NODE2_PORT=$DBNode2Port
+### Operational Database Node2 DBName
+MI_OPRDB_NODE2_SID=$DBNode2SID
+### Operational Database Node2 SchemaName
+MI_OPRDB_NODE2_SCHEMA=$DBNode2Schema
+### Operational Database Node2 Schema userName
+MI_OPRDB_NODE2_USER=$DBNode2UserName
+### Operational Database Node2 Schema password
+MI_OPRDB_NODE2_PWD=$DBNode2Password
+### Reporting Database Node1 Host IP
+MI_REPDB_NODE1_HOST={{ ansible_mi_app_rep_dbhost }}
+### Reporting Database Node1 Host port
+MI_REPDB_NODE1_PORT={{ ansible_mi_app_rep_dbport }}
+### Reporting Database Node1 DBName
+MI_REPDB_NODE1_SID={{ ansible_mi_app_rep_dbsid }}
+### Reporting Database Node1 SchemaName
+MI_REPDB_NODE1_SCHEMA={{ ansible_mi_app_rep_dbschema }}
+### Reporting Database Node1 Schema userName
+MI_REPDB_NODE1_USER={{ ansible_mi_app_rep_dbuser }}
+### Reporting Database Node1 Schema password
+MI_REPDB_NODE1_PWD={{ ansible_mi_app_rep_dbpassword }}
+### Reporting Database Node2 Host IP
+MI_REPDB_NODE2_HOST=$Rep_DBNode2IP
+### Reporting Database Node2 Host port
+MI_REPDB_NODE2_PORT=$Rep_DBNode2Port
+### Reporting Database Node2 DBName
+MI_REPDB_NODE2_SID=$Rep_DBNode2SID
+### Reporting Database Node2 SchemaName
+MI_REPDB_NODE2_SCHEMA=$Rep_DBNode2Schema
+### Reporting Database Node2 Schema userName
+MI_REPDB_NODE2_USER=$Rep_DBNode2UserName
+### Reporting Database Node2 Schema password
+MI_REPDB_NODE2_PWD=$Rep_DBNode2Password
+### Application server Context factory Class (WAS:com.ibm.websphere.naming.WsnInitialContextFactory,WLS:weblogic.jndi.WLInitialContextFactory)
+MI_APPCNTXT_CLASS=com.ibm.websphere.naming.WsnInitialContextFactory
+
+MI_OPRDB_ENCRYPT_PWD=Lx/umfv8rDgH6iSInU/yvOkFuPjZvk6+
+
+MI_REPDB_ENCRYPT_PWD=ibR5LjVh3mmF9x6RDCw8t5HYCLTRhcIy
+
+MI_OPRDB_DRIVER=com.ibm.db2.jcc.DB2Driver
+
+MI_OPR_JDBC_URL=jdbc\:db2\://{{ ansible_mi_app_oper_dbhost }}\:{{ ansible_mi_app_oper_dbport }}/{{ ansible_mi_app_oper_dbsid }}\:currentSchema\={{ ansible_mi_app_oper_dbschema }};
+
+MI_REP_JDBC_URL=jdbc\:db2\://{{ ansible_mi_app_rep_dbhost }}\:{{ ansible_mi_app_rep_dbport }}/{{ ansible_mi_app_rep_dbsid }}\:currentSchema\={{ ansible_mi_app_rep_dbschema }};

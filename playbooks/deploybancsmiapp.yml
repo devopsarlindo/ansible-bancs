@@ -1,0 +1,7 @@
+---
+- hosts: bancs_was_app_servers
+  gather_facts: yes
+  become: yes
+  tasks:
+    - include_role:
+        name: bancsmiapp

@@ -1,0 +1,197 @@
+----------------------------------------------------------------------------------The TCS BaNCSMI installer you are attempting to run seems to have a copy already
+running.
+
+This could be from a previous failed installation attempt or you may have
+accidentally launched
+the installer twice. The recommended action is to select 'No' and wait for the
+other copy of
+the installer to start. If you are sure there is no other copy of the installer
+running, click
+the 'Yes' button to allow this installer to run.
+
+Are you sure you want to continue with this installation?
+
+----------------------------------------------------------------------------------Enter Y for Yes, N for No:
+Y
+
+──────────────────────────────────────────────────────────────────────────────────
+Welcome
+──────────────────────────────────────────────────────────────────────────────────
+
+Welcome to the installation of TCS BaNCSMI 7.10!
+The homepage is at: http://www.tcs.com/bancs
+
+Press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+Information
+──────────────────────────────────────────────────────────────────────────────────
+
+A readme file ...
+This is ReadMe file for TCS BaNCS.
+TCS BaNCS current version is 6.0
+
+Press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+Licensing Agreements
+──────────────────────────────────────────────────────────────────────────────────
+
+
+
+
+
+
+ TCS BNCS Software License Agreement
+
+
+
+
+ TCS BNCS Software License Agreement
+
+
+Notice: You are entitled to receive this product as a licensee and use the same subject to terms and conditions contained herein. Your use of the product amounts to unconditional acceptance of the terms and conditions of this License. If you do not agree with any of the terms and conditions of this License, please do not use this product and return the same to Tata Consultancy Services Ltd. immediately.
+
+
+TCS BNCS, hereinafter referred to as the product, is sold to you, the original licensee, subject to the following terms and conditions pertaining to its use and the warranty applicable to it.
+
+
+
+This product is the property of Tata Consultancy Services Ltd. (TCS) and the all copyrights pertaining to this product rest with TCS. No part of this work may be reproduced, stored in a retrieval system, adapted or transmitted in any form or by any means electronic, mechanical, photographic, optical recording or otherwise without prior written permission of TCS.
+TCS retains all rights including those not expressly granted and your right to use this product automatically and immediately terminates upon your failure to comply with any provision in this License Agreement.
+You may use this product on any compatible client and server computer, if the following conditions are satisfied.
+* The client component of the product may be installed on an unlimited number of client computers, but is used by at most the licensed number of users at any given time, and also provided that you have the original copy of the TCS BNCS documentation.
+* The server component of the product may be installed on an unlimited number of server computers, but is used by at most the licensed number of server computers at any given time, and also provided that you have the original copy of the TCS BNCS documentation.
+Permitted Uses
+You may install this product on a hard disk and use it, strictly in accordance with the instructions and only for the purposes specified in the documentation.
+Prohibited Uses
+
+Without express, written permission from Tata Consultancy Services Ltd.:
+You shall not make copies of the TCS BNCS documentation or the TCS BNCS Program Disk.
+
+ You shall not distribute, either electronically or through removable media, the TCS BNCS software or documentation.
+You shall not rent, sub-license, or lease the TCS BNCS software or documentation. You shall not alter, modify, or adapt the TCS BNCS software or documentation by translating, decomposing, disassembling, creating derivative works or in any other manner.
+Limited Warranty
+In case of physical defects in the media on which the TCS BNCS software is distributed, or in the documentation, Tata Consultancy Services Ltd. will replace the media or documentation at no charge to you, subject to verification and on your returning the defective item along with adequate proof of purchase, to Tata Consultancy Services Ltd., not later than 15 days after the date of purchase.
+
+Although Tata Consultancy Services Ltd. has tested the software and reviewed the documentation, the company makes no warranty or representation, either express or implied, with respect to this software or documentation, its quality, performance, merchantability, or fitness for a particular purpose. As a result, this software and documentation are licensed 'as is', and you, the licensee shall assume the entire risk for their quality and performance.
+ In no event will Tata Consultancy Services Ltd. be liable for direct, indirect, special, incidental, or consequential damages arising out of the use or inability to use the software or documentation, even if advised of the possibility of such damage. In particular, Tata Consultancy Services Ltd. will have no liability for any programs or data stored or used with the TCS BNCS software including the costs of recovering such programs or data.
+The warranty and remedies set forth above are exclusive and in lieu of all others, oral or written, express or implied, except that it does not exclude any liability for death and personal injury arising from proven negligence. No Tata Consultancy Services Ltd. dealer, agent, or employee is authorized to make any modification or addition to this warranty.
+Disclaimer
+ Tata Consultancy Services Ltd. (TCS) will not be held liable for Y2K compliance of the Operating system or any third party products or client supplied products which would directly or indirectly affect the TCS work products and deliverables or any other system with which TCS deliverables interface.
+
+
+
+
+
+Trademark Acknowledgements
+
+
+
+TCS is a trademark of Tata Consultancy Services Ltd.
+TCS BNCS is a registered trademark of Tata Consultancy Services Ltd.
+
+
+
+All other names, other than those that are part of the TCS BNCS software, are used for identification purposes only and are trademarks or registered trademarks of their respective companies.
+
+
+
+All rights reserved.
+Copyright (c) 2012 Tata Consultancy Services Ltd.
+
+
+
+
+
+
+Press 1 to accept, 2 to reject, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+Target Path
+──────────────────────────────────────────────────────────────────────────────────
+
+Select the installation path:  [/home/wasadm/TCS BaNCSMI]
+/app/bancsmiapp/TMP_INSTALLER/Target
+----------------------------------------------------------------------------------Warning!
+
+The directory already exists! Are you sure you want to install here and possibly
+overwrite existing files?
+
+----------------------------------------------------------------------------------Enter Y for Yes, N for No:
+Y
+
+Press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+User Data
+──────────────────────────────────────────────────────────────────────────────────
+
+   User Input Method
+
+
+Please Select Input Method and If remote Installation is allowed
+
+Input Type
+0  [x] Interactive
+1  [ ] File Based
+Input selection:
+1
+
+
+Press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+User Data
+──────────────────────────────────────────────────────────────────────────────────
+
+ TCS BaNCSMI Config File Location
+
+
+Location of the Config File[]
+/app/bancsmiapp/TMP_INSTALLER/MI_Deploy.properties
+
+Press 1 to continue, 2 to quit, 3 to redisplay
+1
+
+──────────────────────────────────────────────────────────────────────────────────
+Installation
+──────────────────────────────────────────────────────────────────────────────────
+
+====================
+Installation started
+Framework: 5.1.3-84aaf (IzPack)
+Platform: linux,version=3.10.0-327.el7.x86_64,arch=x64,symbolicName=null,javaVersion=1.8.0_191
+[ Starting to unpack ]
+[ Processing package: BaNCSMI (1/3) ]
+[ Processing package: MI Application (2/3) ]
+[ Processing package: MI App (3/3) ]
+[ Unpacking finished ]
+Installation finished
+
+──────────────────────────────────────────────────────────────────────────────────
+Perform External Processes
+──────────────────────────────────────────────────────────────────────────────────
+
+[ Starting processing ]
+Starting process Processing Installation (1/1)
+Successfully Created MI_Deploy.properties
+
+──────────────────────────────────────────────────────────────────────────────────
+Installation Finished
+──────────────────────────────────────────────────────────────────────────────────
+
+-----------------------------------------
+Generate an automatic installation script
+-----------------------------------------
+Enter Y for Yes, N for No:
+N
+Installation was successful
+Application installed on /app/bancsmiapp/TMP_INSTALLER/Target
+[ Writing the uninstaller data ... ]
+[ Console installation done ]

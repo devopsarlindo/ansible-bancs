@@ -1,0 +1,80 @@
+#Thu, 27 Sep 2018 10:59:35 +0000
+### Flag To Install MI Online Application In This Server
+INSTALL_MIAPP=no
+### Flag To Install MI Batches In This Server
+INSTALL_MIBATCHES=no
+### Flag To Install MI Comms In This Server
+INSTALL_MICOMMS=yes
+### Flag To Install MI Reports In This Server
+INSTALL_MIREPORTS=no
+
+### INFORMATION FOR Comms STARTS
+### Location For Hosting Comms
+MI_COMMS_HOME={{ ansible_mi_commsapp_home_dir }}
+### HostName of the server hosting batches
+MI_COMMS_HOST={{ ansible_hostname }}
+### User for running Comms Process
+MI_COMMS_USER={{ ansible_mi_commsapp_user }}
+
+MI_APP_CNTXT_URL=corbaloc\:iiop\:={{ groups['bancs_was_app_servers'][0] }}\:{{ ansible_mi_commsapp_was_corbaloc_port }}
+
+### Flag Application database Type (STD:Standalone,ND:Clustered)
+MI_DB2_TYPE=STD
+### Application Database Type
+MI_DBTYPE=DB2
+### Operational Database Node1 Host IP
+MI_OPRDB_NODE1_HOST={{ ansible_mi_commsapp_oper_dbhost }}
+### Operational Database Node1 Host port
+MI_OPRDB_NODE1_PORT={{ ansible_mi_commsapp_oper_dbport }}
+### Operational Database Node1 DBName
+MI_OPRDB_NODE1_SID={{ ansible_mi_commsapp_oper_dbsid }}
+### Operational Database Node1 SchemaName
+MI_OPRDB_NODE1_SCHEMA={{ ansible_mi_commsapp_oper_dbschema }}
+### Operational Database Node1 Schema userName
+MI_OPRDB_NODE1_USER={{ ansible_mi_commsapp_oper_dbuser }}
+### Operational Database Node1 Schema password
+MI_OPRDB_NODE1_PWD={{ ansible_mi_commsapp_oper_dbpassword }}
+### Operational Database Node2 Host IP
+MI_OPRDB_NODE2_HOST=$DBNode2IP
+### Operational Database Node2 Host port
+MI_OPRDB_NODE2_PORT=$DBNode2Port
+### Operational Database Node2 DBName
+MI_OPRDB_NODE2_SID=$DBNode2SID
+### Operational Database Node2 SchemaName
+MI_OPRDB_NODE2_SCHEMA=$DBNode2Schema
+### Operational Database Node2 Schema userName
+MI_OPRDB_NODE2_USER=$DBNode2UserName
+### Operational Database Node2 Schema password
+MI_OPRDB_NODE2_PWD=$DBNode2Password
+### Reporting Database Node1 Host IP
+MI_REPDB_NODE1_HOST={{ ansible_mi_commsapp_rep_dbhost }}
+### Reporting Database Node1 Host port
+MI_REPDB_NODE1_PORT={{ ansible_mi_commsapp_rep_dbport }}
+### Reporting Database Node1 DBName
+MI_REPDB_NODE1_SID={{ ansible_mi_commsapp_rep_dbsid }}
+### Reporting Database Node1 SchemaName
+MI_REPDB_NODE1_SCHEMA={{ ansible_mi_commsapp_rep_dbschema }}
+### Reporting Database Node1 Schema userName
+MI_REPDB_NODE1_USER={{ ansible_mi_commsapp_rep_dbuser }}
+### Reporting Database Node1 Schema password
+MI_REPDB_NODE1_PWD={{ ansible_mi_commsapp_rep_dbpassword }}
+### Reporting Database Node2 Host IP
+MI_REPDB_NODE2_HOST=$Rep_DBNode2IP
+### Reporting Database Node2 Host port
+MI_REPDB_NODE2_PORT=$Rep_DBNode2Port
+### Reporting Database Node2 DBName
+MI_REPDB_NODE2_SID=$Rep_DBNode2SID
+### Reporting Database Node2 SchemaName
+MI_REPDB_NODE2_SCHEMA=$Rep_DBNode2Schema
+### Reporting Database Node2 Schema userName
+MI_REPDB_NODE2_USER=$Rep_DBNode2UserName
+### Reporting Database Node2 Schema password
+MI_REPDB_NODE2_PWD=$Rep_DBNode2Password
+
+MI_OPRDB_ENCRYPT_PWD=Lx/umfv8rDgH6iSInU/yvOkFuPjZvk6+
+MI_REPDB_ENCRYPT_PWD=ibR5LjVh3mmF9x6RDCw8t5HYCLTRhcIy
+
+MI_OPRDB_DRIVER=com.ibm.db2.jcc.DB2Driver
+
+MI_OPR_JDBC_URL=jdbc\:db2\://{{ ansible_mi_commsapp_oper_dbhost }}\:{{ ansible_mi_commsapp_oper_dbport }}/{{ ansible_mi_commsapp_oper_dbsid }}\:currentSchema\={{ ansible_mi_commsapp_oper_dbschema }};
+MI_REP_JDBC_URL=jdbc\:db2\://{{ ansible_mi_commsapp_rep_dbhost }}\:{{ ansible_mi_commsapp_rep_dbport }}/{{ ansible_mi_commsapp_rep_dbsid }}\:currentSchema\={{ ansible_mi_commsapp_rep_dbschema }};
