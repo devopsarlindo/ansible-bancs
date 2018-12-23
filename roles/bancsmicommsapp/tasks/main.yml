@@ -78,6 +78,7 @@
     echo: yes
     creates: "{{ ansible_mi_commsapp_home_dir }}/bin"
     command: java -jar MI.jar -console
+    timeout: 180
     responses:
       'Press 1 to continue, 2 to quit, 3 to redisplay': 1
       'Press 1 to continue, 2 to quit, 3 to redisplay': 1

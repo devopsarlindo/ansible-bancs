@@ -1,7 +1,4 @@
 ---
-- name: debug
-  debug: var="{{ ansible_mi_app_wasprof_port }}"
-
 - name: check java version
   shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
   register: java_version
@@ -64,6 +61,12 @@
     group: wasgrp
 
 - block:
+    - name: restore websphere config back to factory default config
+      shell: "./restoreConfig.sh WebSphereConfigFactory.zip -nostop"
+      args:
+        chdir: "{{ ansible_mi_app_washome_dir }}/bin"
+      become_user: wasadm
+
     - name: remove install target directory
       file: 
         path: "{{ item }}"
@@ -84,6 +87,7 @@
     echo: yes
     creates: "{{ ansible_mi_app_home_dir }}/Deployment"
     command: java -jar MI.jar -console
+    timeout: 180
     responses:
       'Press 1 to continue, 2 to quit, 3 to redisplay': 1
       'Press 1 to continue, 2 to quit, 3 to redisplay': 1
