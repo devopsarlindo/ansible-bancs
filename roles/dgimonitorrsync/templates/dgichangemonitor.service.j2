@@ -1,0 +1,7 @@
+[Unit]
+Description= Starts Data Grid Rsync
+Documentation= man:systemd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c "echo 'rsync' >> /tmp/arlindo.txt"
