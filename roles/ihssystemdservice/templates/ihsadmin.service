@@ -1,0 +1,12 @@
+[Unit]
+Description=IBM HTTP Admin Server
+
+[Service]
+Type=oneshot
+ExecStart=/opt/IBM/tools/ihsadmin.sh start
+ExecStop=/opt/IBM/tools/ihsadmin.sh stop
+User=root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
