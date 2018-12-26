@@ -5,3 +5,5 @@ Documentation= man:systemd.service
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/bash -c "echo 'rsync' >> /tmp/arlindo.txt"
+#sync dir via push to remote servers
+#rsync -r -a -v -e ssh --delete /tmp/testchanges vagrant@node1:/tmp

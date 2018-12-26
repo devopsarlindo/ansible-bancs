@@ -1,0 +1,18 @@
+[Unit]
+Description=IBM WebSphere Application Server
+Requires=multi-user.target
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/opt/IBM/tools/startInfrastructure.sh
+ExecStop=/opt/IBM/tools/stopInfrastructure.sh
+User=wasadm
+LimitNOFILE=60000
+LimitNPROC=60000
+TimeoutStartSec=15min
+TimeoutStopSec=15min
+
+[Install]
+WantedBy=multi-user.target
